@@ -25,3 +25,7 @@ type Mutation {
   createTodo(input: CreateTodoInput!): Todo!
   clearTodos: Int!
 }
+
+extend input CreateTodoInput {
+  setPrioritySameAsParent: Boolean
+}

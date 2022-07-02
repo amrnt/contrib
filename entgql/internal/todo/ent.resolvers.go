@@ -56,8 +56,12 @@ func (r *queryResolver) Users(ctx context.Context, after *ent.Cursor, first *int
 // Query returns QueryResolver implementation.
 func (r *Resolver) Query() QueryResolver { return &queryResolver{r} }
 
+// CreateTodoInput returns CreateTodoInputResolver implementation.
+func (r *Resolver) CreateTodoInput() CreateTodoInputResolver { return &createTodoInputResolver{r} }
+
 // TodoWhereInput returns TodoWhereInputResolver implementation.
 func (r *Resolver) TodoWhereInput() TodoWhereInputResolver { return &todoWhereInputResolver{r} }
 
 type queryResolver struct{ *Resolver }
+type createTodoInputResolver struct{ *Resolver }
 type todoWhereInputResolver struct{ *Resolver }

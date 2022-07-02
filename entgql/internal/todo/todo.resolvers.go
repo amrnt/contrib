@@ -19,6 +19,7 @@ package todo
 
 import (
 	"context"
+	"fmt"
 	"time"
 
 	"entgo.io/contrib/entgql/internal/todo/ent"
@@ -26,6 +27,8 @@ import (
 )
 
 func (r *mutationResolver) CreateTodo(ctx context.Context, input ent.CreateTodoInput) (*ent.Todo, error) {
+	fmt.Println("input", input)
+
 	return ent.FromContext(ctx).Todo.
 		Create().
 		SetInput(input).
@@ -41,6 +44,34 @@ func (r *mutationResolver) ClearTodos(ctx context.Context) (int, error) {
 
 func (r *queryResolver) Ping(ctx context.Context) (string, error) {
 	return "pong", nil
+}
+
+func (r *createTodoInputResolver) SetPrioritySameAsParent(ctx context.Context, obj *ent.CreateTodoInput, data *bool) error {
+	fmt.Println("obj", obj)
+
+	if data == nil {
+		return nil
+	}
+
+	// if setPrioritySameAsParent==false do nothing
+	if !*data {
+		return nil
+	}
+
+	// do nothing
+	// no parent to copy parents Priority to the new child
+	if obj.ParentID == nil {
+		return nil
+	}
+
+	pt, err := ent.FromContext(ctx).Todo.Get(ctx, *obj.ParentID)
+	if err != nil {
+		return fmt.Errorf("error finding parent: %w", err)
+	}
+
+	obj.Priority = &pt.Priority
+
+	return nil
 }
 
 func (r *todoWhereInputResolver) CreatedToday(ctx context.Context, obj *ent.TodoWhereInput, data *bool) error {

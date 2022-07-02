@@ -43,6 +43,7 @@ type Config struct {
 type ResolverRoot interface {
 	Mutation() MutationResolver
 	Query() QueryResolver
+	CreateTodoInput() CreateTodoInputResolver
 	TodoWhereInput() TodoWhereInputResolver
 }
 
@@ -168,6 +169,9 @@ type QueryResolver interface {
 	Ping(ctx context.Context) (string, error)
 }
 
+type CreateTodoInputResolver interface {
+	SetPrioritySameAsParent(ctx context.Context, obj *ent.CreateTodoInput, data *bool) error
+}
 type TodoWhereInputResolver interface {
 	CreatedToday(ctx context.Context, obj *ent.TodoWhereInput, data *bool) error
 }
@@ -755,6 +759,10 @@ extend type Query {
 type Mutation {
   createTodo(input: CreateTodoInput!): Todo!
   clearTodos: Int!
+}
+
+extend input CreateTodoInput {
+  setPrioritySameAsParent: Boolean
 }
 `, BuiltIn: false},
 	{Name: "ent.graphql", Input: `directive @goField(forceResolver: Boolean, name: String) on FIELD_DEFINITION | INPUT_FIELD_DEFINITION
@@ -7240,6 +7248,17 @@ func (ec *executionContext) unmarshalInputCreateTodoInput(ctx context.Context, o
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("secretID"))
 			it.SecretID, err = ec.unmarshalOID2ᚖint(ctx, v)
 			if err != nil {
+				return it, err
+			}
+		case "setPrioritySameAsParent":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("setPrioritySameAsParent"))
+			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			if err = ec.resolvers.CreateTodoInput().SetPrioritySameAsParent(ctx, &it, data); err != nil {
 				return it, err
 			}
 		}
