@@ -9,6 +9,7 @@ input CategoryConfigInput {
 scalar Time
 scalar Duration
 scalar Uint64
+scalar Map
 
 extend input TodoWhereInput {
   createdToday: Boolean

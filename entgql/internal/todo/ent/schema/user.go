@@ -32,6 +32,8 @@ func (User) Fields() []ent.Field {
 	return []ent.Field{
 		field.String("name").
 			Default("Anonymous"),
+		field.JSON("metadata", map[string]any{}).Optional().Annotations(entgql.Type("Map")),
+		// field.JSON("raw", map[string]any{}).Annotations(entgql.Type("Map")),
 	}
 }
 

@@ -49,6 +49,10 @@ func (r *todoResolver) Status(ctx context.Context, obj *ent.Todo) (todo.Status, 
 	panic(fmt.Errorf("not implemented"))
 }
 
+func (r *userResolver) Metadata(ctx context.Context, obj *ent.User) (map[string]interface{}, error) {
+	panic(fmt.Errorf("not implemented"))
+}
+
 func (r *createTodoInputResolver) Status(ctx context.Context, obj *ent.CreateTodoInput, data todo.Status) error {
 	panic(fmt.Errorf("not implemented"))
 }
@@ -79,6 +83,9 @@ func (r *Resolver) Query() QueryResolver { return &queryResolver{r} }
 // Todo returns TodoResolver implementation.
 func (r *Resolver) Todo() TodoResolver { return &todoResolver{r} }
 
+// User returns UserResolver implementation.
+func (r *Resolver) User() UserResolver { return &userResolver{r} }
+
 // CreateTodoInput returns CreateTodoInputResolver implementation.
 func (r *Resolver) CreateTodoInput() CreateTodoInputResolver { return &createTodoInputResolver{r} }
 
@@ -90,6 +97,7 @@ func (r *Resolver) UpdateTodoInput() UpdateTodoInputResolver { return &updateTod
 
 type queryResolver struct{ *Resolver }
 type todoResolver struct{ *Resolver }
+type userResolver struct{ *Resolver }
 type createTodoInputResolver struct{ *Resolver }
 type todoWhereInputResolver struct{ *Resolver }
 type updateTodoInputResolver struct{ *Resolver }

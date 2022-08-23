@@ -27,6 +27,8 @@ const (
 	FieldID = "id"
 	// FieldName holds the string denoting the name field in the database.
 	FieldName = "name"
+	// FieldMetadata holds the string denoting the metadata field in the database.
+	FieldMetadata = "metadata"
 	// EdgeGroups holds the string denoting the groups edge name in mutations.
 	EdgeGroups = "groups"
 	// EdgeFriends holds the string denoting the friends edge name in mutations.
@@ -55,6 +57,7 @@ const (
 var Columns = []string{
 	FieldID,
 	FieldName,
+	FieldMetadata,
 }
 
 var (

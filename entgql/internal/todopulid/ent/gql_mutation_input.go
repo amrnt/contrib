@@ -118,6 +118,7 @@ func (c *TodoUpdateOne) SetInput(i UpdateTodoInput) *TodoUpdateOne {
 // CreateUserInput represents a mutation input for creating users.
 type CreateUserInput struct {
 	Name      *string
+	Metadata  map[string]interface{}
 	GroupIDs  []pulid.ID
 	FriendIDs []pulid.ID
 }
@@ -127,6 +128,7 @@ func (i *CreateUserInput) Mutate(m *UserMutation) {
 	if v := i.Name; v != nil {
 		m.SetName(*v)
 	}
+	m.SetMetadata(i.Metadata)
 	if v := i.GroupIDs; len(v) > 0 {
 		m.AddGroupIDs(v...)
 	}
@@ -144,6 +146,8 @@ func (c *UserCreate) SetInput(i CreateUserInput) *UserCreate {
 // UpdateUserInput represents a mutation input for updating users.
 type UpdateUserInput struct {
 	Name            *string
+	ClearMetadata   bool
+	Metadata        map[string]interface{}
 	AddGroupIDs     []pulid.ID
 	RemoveGroupIDs  []pulid.ID
 	AddFriendIDs    []pulid.ID
@@ -155,6 +159,10 @@ func (i *UpdateUserInput) Mutate(m *UserMutation) {
 	if v := i.Name; v != nil {
 		m.SetName(*v)
 	}
+	if i.ClearMetadata {
+		m.ClearMetadata()
+	}
+	m.SetMetadata(i.Metadata)
 	if v := i.AddGroupIDs; len(v) > 0 {
 		m.AddGroupIDs(v...)
 	}

@@ -58,6 +58,18 @@ func (uu *UserUpdate) SetNillableName(s *string) *UserUpdate {
 	return uu
 }
 
+// SetMetadata sets the "metadata" field.
+func (uu *UserUpdate) SetMetadata(m map[string]interface{}) *UserUpdate {
+	uu.mutation.SetMetadata(m)
+	return uu
+}
+
+// ClearMetadata clears the value of the "metadata" field.
+func (uu *UserUpdate) ClearMetadata() *UserUpdate {
+	uu.mutation.ClearMetadata()
+	return uu
+}
+
 // AddGroupIDs adds the "groups" edge to the Group entity by IDs.
 func (uu *UserUpdate) AddGroupIDs(ids ...pulid.ID) *UserUpdate {
 	uu.mutation.AddGroupIDs(ids...)
@@ -248,6 +260,19 @@ func (uu *UserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Type:   field.TypeString,
 			Value:  value,
 			Column: user.FieldName,
+		})
+	}
+	if value, ok := uu.mutation.Metadata(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeJSON,
+			Value:  value,
+			Column: user.FieldMetadata,
+		})
+	}
+	if uu.mutation.MetadataCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeJSON,
+			Column: user.FieldMetadata,
 		})
 	}
 	if uu.mutation.GroupsCleared() {
@@ -463,6 +488,18 @@ func (uuo *UserUpdateOne) SetNillableName(s *string) *UserUpdateOne {
 	if s != nil {
 		uuo.SetName(*s)
 	}
+	return uuo
+}
+
+// SetMetadata sets the "metadata" field.
+func (uuo *UserUpdateOne) SetMetadata(m map[string]interface{}) *UserUpdateOne {
+	uuo.mutation.SetMetadata(m)
+	return uuo
+}
+
+// ClearMetadata clears the value of the "metadata" field.
+func (uuo *UserUpdateOne) ClearMetadata() *UserUpdateOne {
+	uuo.mutation.ClearMetadata()
 	return uuo
 }
 
@@ -686,6 +723,19 @@ func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (_node *User, err error) 
 			Type:   field.TypeString,
 			Value:  value,
 			Column: user.FieldName,
+		})
+	}
+	if value, ok := uuo.mutation.Metadata(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeJSON,
+			Value:  value,
+			Column: user.FieldMetadata,
+		})
+	}
+	if uuo.mutation.MetadataCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeJSON,
+			Column: user.FieldMetadata,
 		})
 	}
 	if uuo.mutation.GroupsCleared() {
