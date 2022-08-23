@@ -24,7 +24,11 @@
             {{- if $f.ClearOp }}
                 {{ print "Clear" $f.StructField }} bool
             {{- end }}
-            {{ $f.StructField }} {{ if $f.IsPointer }}*{{ end }}{{ $f.Type }}
+            {{- if eq $f.Type.ConstName "TypeJSON" }}
+                {{ $f.StructField }} {{ $f.Type }}
+            {{- else }}
+                {{ $f.StructField }} {{ if $f.IsPointer }}*{{ end }}{{ $f.Type }}
+            {{- end }}
         {{- end }}
         {{- range $e := $edges }}
             {{- if $e.Unique }}
@@ -53,12 +57,16 @@
                     m.{{ print "Clear" $f.StructField }}()
                 }
             {{- end }}
-            {{- if $f.IsPointer }}
-                if v := i.{{ $f.StructField }}; v != nil {
-                    m.{{ $f.MutationSet }}(*v)
-                }
-            {{- else }}
+            {{- if eq $f.Type.ConstName "TypeJSON" }}
                 m.{{ $f.MutationSet }}(i.{{ $f.StructField }})
+            {{- else }}
+                {{- if $f.IsPointer }}
+                    if v := i.{{ $f.StructField }}; v != nil {
+                        m.{{ $f.MutationSet }}(*v)
+                    }
+                {{- else }}
+                    m.{{ $f.MutationSet }}(i.{{ $f.StructField }})
+                {{- end }}
             {{- end }}
         {{- end }}
         {{- range $e := $edges }}
