@@ -243,7 +243,7 @@ func (e *schemaGenerator) buildTypes(g *gen.Graph, s *ast.Schema) error {
 			}
 		}
 
-		if e.genMutations {
+		if e.genMutations && !ant.Skip.Is(SkipMutationInputGraphqlDefs) {
 			defs, err := e.buildMutationInputs(node, ant, gqlType)
 			if err != nil {
 				return err

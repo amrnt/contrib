@@ -100,6 +100,9 @@ const (
 	// SkipMutationUpdateInput skips generating GraphQL Update<Type>Input types.
 	// If defined on a field, the type will be generated without the field.
 	SkipMutationUpdateInput
+	// SkipMutationInputGraphqlDefs skips generating GraphQL X<Type>Input types defs.
+	// But it will generate X<Type>Input struct and SetInput()
+	SkipMutationInputGraphqlDefs
 
 	// SkipAll is default mode to skip all.
 	SkipAll = SkipType |
@@ -107,7 +110,8 @@ const (
 		SkipOrderField |
 		SkipWhereInput |
 		SkipMutationCreateInput |
-		SkipMutationUpdateInput
+		SkipMutationUpdateInput |
+		SkipMutationInputGraphqlDefs
 )
 
 // Name implements ent.Annotation interface.
