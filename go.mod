@@ -10,7 +10,7 @@ require (
 	github.com/go-openapi/inflect v0.19.0
 	github.com/google/uuid v1.3.0
 	github.com/hashicorp/go-multierror v1.1.1
-	github.com/jhump/protoreflect v1.10.1
+	github.com/jhump/protoreflect v1.13.0
 	github.com/mattn/go-sqlite3 v1.14.14
 	github.com/mitchellh/mapstructure v1.5.0
 	github.com/ogen-go/ogen v0.1.1-0.20211220145210-5927cf47f01a
